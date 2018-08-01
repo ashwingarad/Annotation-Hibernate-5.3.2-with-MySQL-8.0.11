@@ -13,6 +13,5 @@
 		<property name="connection.password">root</property>
 		<property name="hbm2ddl.auto">update</property>
 		<mapping class="com.model.Licence" />
-		<mapping class="com.generator.MyGenerator"/>
 	</session-factory>
 </hibernate-configuration>
