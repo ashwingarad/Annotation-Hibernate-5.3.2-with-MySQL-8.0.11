@@ -15,18 +15,17 @@ import com.model.Employee;
 
 public class Test {
 
-	public static void validate(Employee employee) {
+	public static Set<ConstraintViolation<Employee>> validate(Employee employee) {
 		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 		Validator validator = factory.getValidator();
 		Set<ConstraintViolation<Employee>> constraintViolations = validator.validate(employee);
 		for (ConstraintViolation<Employee> constraintViolation : constraintViolations) {
 			System.out.println(constraintViolation.getPropertyPath() + " -> " + constraintViolation.getMessage());
 		}
+		return constraintViolations;
 	}
 
 	public static void main(String[] args) throws InterruptedException {
-
-		Session session = HibernateUtil.getSession();
 
 		Employee employee = new Employee();
 		employee.setName("Ashwin");
@@ -34,34 +33,41 @@ public class Test {
 		employee.setEmail("abc@gmail.com");
 		employee.setWorking(true);
 
-		Test.validate(employee);
+		Set violation = Test.validate(employee);
 
-		session.save(employee);
-		session.beginTransaction().commit();
+		if (violation.isEmpty()) {
+			Session session = HibernateUtil.getSession();
+			session.save(employee);
+			session.beginTransaction().commit();
 
-		if (session.getTransaction().getStatus() == TransactionStatus.COMMITTED) {
-			System.out.println("Saved");
+			if (session.getTransaction().getStatus() == TransactionStatus.COMMITTED) {
+				System.out.println("Saved");
+			}
+			session.close();
+
+			Thread.sleep(5000);
+
+			Session session2 = HibernateUtil.getSession();
+			Employee employee2 = session2.get(Employee.class, 1L);
+			employee2.setSalary(49000);
+
+			violation = Test.validate(employee2);
+
+			if (violation.isEmpty()) {
+				session2.beginTransaction();
+				session2.persist(employee2);
+				session2.getTransaction().commit();
+
+				if (session2.getTransaction().getStatus() == TransactionStatus.COMMITTED) {
+					System.out.println("Updated");
+				}
+			}
+
+			session2.close();
+			HibernateUtil.closeFactory();
 		}
-
-		session.close();
-
-		Thread.sleep(5000);
-
-		Session session2 = HibernateUtil.getSession();
-		Employee employee2 = session2.get(Employee.class, 1L);
-		employee2.setSalary(49000);
-
-		Test.validate(employee2);
-
-		session2.beginTransaction();
-		session2.persist(employee2);
-		session2.getTransaction().commit();
-
-		if (session2.getTransaction().getStatus() == TransactionStatus.COMMITTED) {
-			System.out.println("Updated");
-		}
-		session2.close();
-		HibernateUtil.closeFactory();
+		
+		System.out.println("The End.......");
 
 	}
 }
