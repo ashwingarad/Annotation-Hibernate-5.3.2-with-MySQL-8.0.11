@@ -42,7 +42,7 @@ public class Test {
 
 		Session session = HibernateUtil.getSession();
 		Transaction tx = session.beginTransaction();
-		session.persist(department);
+		session.persist(teacher);
 		tx.commit();
 
 		if (tx.getStatus() == TransactionStatus.COMMITTED) {
