@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+		<property name="dialect">org.hibernate.dialect.MySQL8Dialect</property>
+		<property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+		<property name="connection.url">jdbc:mysql://localhost:3306/hibernate?useSSL=false</property>
+		<property name="connection.username">root</property>
+		<property name="connection.password">root</property>
+		<property name="hibernate.current_session_context_class">thread</property>
+		<property name="hbm2ddl.auto">create</property>
+		<mapping class="com.model.Student"/>
+	</session-factory>
+</hibernate-configuration>
+
+
+<!-- meaning and need for the current_session_context_class
+When you create a hibernate session using any of the
+sessionFactory.openSession(...) methods the session factory will 'bind'
+the session to the current context. The default context is 'thread'
+which means the sesion factory will bind the session to the thread from
+which openSession(...) is called.
+
+This is useful because you can later call sessionFactory.getCurrentSession()
+which will return the session that is bound to the currently running
+thread.
+
+You can use other predefined current_session_context_class values such as
+'jta' which will bind the session to the currently running JTA
+transaction (if you're running in an application server that supports
+JTA this is really useful). Or you can write your own implementation of
+org.hibernate.context.CurrentSessionContext and use that implementation
+to manage the current session context (not really advisable unless you
+absolutely need to).  -->
