@@ -1,7 +1,7 @@
 # Annotation-Hibernate-5.3.2-with-MySQL-8.0.11
 Using annotations
 
-#Changes in hibernate.cfg.xml
+# Changes in hibernate.cfg.xml
 Replace hibernate.dialect property org.hibernate.dialect.MySQL5Dialect to org.hibernate.dialect.MySQL8Dialect
 
 # Hibernate 5 - What's new in Hibernate 5 Framework?
