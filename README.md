@@ -1,6 +1,9 @@
 # Annotation-Hibernate-5.3.2-with-MySQL-8.0.11
 Using annotations
 
+#Changes in hibernate.cfg.xml
+Replace hibernate.dialect property org.hibernate.dialect.MySQL5Dialect to org.hibernate.dialect.MySQL8Dialect
+
 # Hibernate 5 - What's new in Hibernate 5 Framework?
 
 Hibernate ORM 5.2.10 Final is just released with many new features and improvements. In generate what are the new features which is added to the Hibernate 5 and how to use these features in making applications?
